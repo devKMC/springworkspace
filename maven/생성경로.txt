@@ -1,0 +1,7 @@
+
+extension pack for java
+gradle for java 그래들 사용시 설치하여야함
+
+VS CODE 에서 - F1 - java create java project  - maven -  no archtype - com. 회사명 - project 명 입력
+구글에 maven 검색시 repository 사이트를 통해 라이브러리를 확인할 수 있음
+maven 주소를 가져와서 폼에 입력하여 적용 가능 예시로 my sql 적용되어 있음
