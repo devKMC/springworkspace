@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mincheol.basic.dto.SampleDto;
 
+import jakarta.validation.Valid;
+
 @RestController
 // HTTP * localhost: 4000/request-data/**  로 받으려면 밑에 맵핑을 해줘야함
 @RequestMapping("/request-data")
@@ -28,7 +30,7 @@ public class RequestDataController {
     // http://localhost:4000/request-data/request-param?userid=qwer@userName=gildong
     public String getRequestParam(
         @RequestParam(name="userId") String userid,
-        @RequestParam(name="userName" ,required = false) String userName,
+        @RequestParam(name="userName" ,required = false) String userName,   //required = false 를 사용해 필수가 아님을 나타냄
         @RequestParam() int userAge
         ){
         return "사용자 아이디 :" + userid + "/ 사용자 이름 :" + userName + "/ 사용자 나이 :" + userAge;
@@ -77,10 +79,11 @@ public class RequestDataController {
     //@RequestBody()
     // - POST , PATCH , PUT 처럼 RequestBody로 데이터를 전송하는 메서드에서 데이터를 가져오기 위해 사용
     // HTTP POST localhost:4000/request-data/post
-    @PostMapping("/Post")
+    @PostMapping("/post")
     public String post(
         // @RequestBody String text
-        @RequestBody SampleDto dto
+        // @valid : 해당 payload에 대해서 유효성 검사를 실시하도록 함
+        @RequestBody @Valid SampleDto dto
 
     ){
         return "전송한 데이터:" + dto.toString();
