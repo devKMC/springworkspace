@@ -29,16 +29,29 @@ import lombok.RequiredArgsConstructor;
 // @RequestMapping(value ="/main", method= {RequestMethod.GET})
 // HTTP GET localhost:4000/main/**
 @RequestMapping("/main")
+// final로 선언된 필요 변수에 대해서 생성자를 자동으로 작성함
 @RequiredArgsConstructor
 public class BasicController {
 
     // private BasicService service;
 
-    // @autowirde
+
+    // 의존성 역전 (DI) :
+    // - 해당 클래스에 필요한 의존성을 외부(클래스의 인스턴스를 생성하는 위치) 에서 주입 
+    // - 생성자를 통한 의존성 주입, setter 메서드를 통해 의존성 주입 , 필드를 통한 의존성 주입
+    // - 생성자를 통한 의존성 주입을 SPRING에서 권장 (의존성이 주입되지 않은 경우가 존재할 수 없기 때문)
+    // - Spring framework에서 의존성 주입은 제어의 역전 (IOC)를 통해서 spring framework가 진행 (@Component를 사용해서 Spring Bean으로 등록된 Class에 한해서)
+
+    // @ autowired : 등록된 Spring Bean을 제어의 역전을 통해서 의존성을 주입하는 방법
+    // -단, 생성자를 통한 의존성 주입에는 @autowired를 생략해도 됨
+
+    // @autowired
     // public BasicController (BasicService service){
     //     this.service = service;
     // }
 
+    // 의존성 주입시 클래스로 직접 참조변수를 만들지 않고 인터페이스로 간접적으로 만드는 이유
+    // 고수준의 모듈에서 저수준의 모듈을 직접 참조하지 않고 추상화를 통해 간접 참조함으로 각 모듈간의 결합도를 낮춤 -> 코드의 재사용성 향상 , 유지보수성 향상
     private final BasicService service;
 
     //HTTP GET localhost:4000/main/  <-- 까지 요청이 밑에 코드
