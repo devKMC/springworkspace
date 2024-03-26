@@ -32,7 +32,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
 	// MySQL 연결을 위한 connector 의존성
-	implementation 'com.mysql:mysql-connector-j:8.0.33'
+	// 실행될때 속도 단축
+	runtimeOnly 'com.mysql:mysql-connector-j:8.0.33'
 
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
