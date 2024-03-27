@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 // 제이슨 형태를 반환하는 컨트롤러
+@SuppressWarnings("unused")
 @RestController
 
 //HTTP * localhost:400/response-data/** 로 보여주려면 

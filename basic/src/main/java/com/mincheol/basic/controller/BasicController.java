@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 
 // @Resutcontroller : JSON 형태의 responseBody를 반환하는 컨트롤러 임을 명시
 // @RestController = @controller + @responseBody
+@SuppressWarnings("unused")
 @RestController
 
 // @RequestMappint() : HTTP 요청에 클래스와 메서드를 매핑하기 위한 어노테이션
