@@ -1,5 +1,7 @@
 package com.mincheol.basic.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,13 +17,45 @@ import com.mincheol.basic.entity.StudentEntity;
 @Repository
 
 public interface studentRepository
-// JpaRepository (T,ID) :
-// - JPA 기반의 Repository를 구현하는 주요 인터페이스
-// - 기본 CRUD, 정렬 기능을 제공
-// - JPA 기반 Repository를 생성할때 반드시 상속해야함
-// - 매개타입 T : 해당 Repository가 어떤 entity의 Repository 인지 나타내는 매개타입
-// - 매개타입 ID : 해당 repository에서 사용하는 Entityt의 Primary key 데이터타입을 지정하는 매개타입
+    // JpaRepository (T,ID) :
+    // - JPA 기반의 Repository를 구현하는 주요 인터페이스
+    // - 기본 CRUD, 정렬 기능을 제공
+    // - JPA 기반 Repository를 생성할때 반드시 상속해야함
+    // - 매개타입 T : 해당 Repository가 어떤 entity의 Repository 인지 나타내는 매개타입
+    // - 매개타입 ID : 해당 repository에서 사용하는 Entityt의 Primary key 데이터타입을 지정하는 매개타입
 
-extends JpaRepository <StudentEntity,Integer> {
+        extends JpaRepository<StudentEntity, Integer> {
+    // Student 테이블에서 address가 '서울특별시'인 레코드를 조회
 
+    // SQL 표현
+    // SELECT * FROM student
+    // WHERE address = '서울특별시';
+
+    // SELCT * ALL = find , BY Adress 조건 절, () 값
+    List<StudentEntity> findByAddress(String address);
+
+    // SQL
+    // SELECT * FROM student
+    // WHERE graduation IS true
+    // ORDER BY age DESC;
+
+    // Query method 로 변경
+    // 반환 되는 개수의 형태를 표현하기 위해 (0개부터 무한대) 리스트로 받아줌
+    List<StudentEntity> findByGraduationOrderByAgeDesc(boolean graduation);
+
+    // SQL
+    // SELECT * FROM student
+    // WHERE student_number = 5 
+    // AND age > 20 
+    // (student_number 의 유니크키 조건으로 인해 AND 조건일시 0개부터 1개까지 받을수 있기에) 
+    StudentEntity findByStudentNumberAndAgeGreaterThan(Integer studentNumber, Integer age);
+
+    // SQL
+    // SELECT count(*) FROM student
+    // WHERE graduation is false
+    int countByGraduation(Boolean graduation);
+
+    // address가 '서울특별시' 이면서 graduation이 true인 레코드가 존재하는가? 
+    // 받을 타입을 앞쪽에 적어주면됨 
+    boolean existsByAddressAndGraduation(String address,boolean graduation);
 }
