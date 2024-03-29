@@ -3,6 +3,7 @@ package com.mincheol.basic.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.mincheol.basic.entity.StudentEntity;
@@ -17,12 +18,12 @@ import com.mincheol.basic.entity.StudentEntity;
 @Repository
 
 public interface studentRepository
-    // JpaRepository (T,ID) :
-    // - JPA 기반의 Repository를 구현하는 주요 인터페이스
-    // - 기본 CRUD, 정렬 기능을 제공
-    // - JPA 기반 Repository를 생성할때 반드시 상속해야함
-    // - 매개타입 T : 해당 Repository가 어떤 entity의 Repository 인지 나타내는 매개타입
-    // - 매개타입 ID : 해당 repository에서 사용하는 Entityt의 Primary key 데이터타입을 지정하는 매개타입
+        // JpaRepository (T,ID) :
+        // - JPA 기반의 Repository를 구현하는 주요 인터페이스
+        // - 기본 CRUD, 정렬 기능을 제공
+        // - JPA 기반 Repository를 생성할때 반드시 상속해야함
+        // - 매개타입 T : 해당 Repository가 어떤 entity의 Repository 인지 나타내는 매개타입
+        // - 매개타입 ID : 해당 repository에서 사용하는 Entityt의 Primary key 데이터타입을 지정하는 매개타입
 
         extends JpaRepository<StudentEntity, Integer> {
     // Student 테이블에서 address가 '서울특별시'인 레코드를 조회
@@ -45,9 +46,9 @@ public interface studentRepository
 
     // SQL
     // SELECT * FROM student
-    // WHERE student_number = 5 
-    // AND age > 20 
-    // (student_number 의 유니크키 조건으로 인해 AND 조건일시 0개부터 1개까지 받을수 있기에) 
+    // WHERE student_number = 5
+    // AND age > 20
+    // (student_number 의 유니크키 조건으로 인해 AND 조건일시 0개부터 1개까지 받을수 있기에)
     StudentEntity findByStudentNumberAndAgeGreaterThan(Integer studentNumber, Integer age);
 
     // SQL
@@ -55,7 +56,43 @@ public interface studentRepository
     // WHERE graduation is false
     int countByGraduation(Boolean graduation);
 
-    // address가 '서울특별시' 이면서 graduation이 true인 레코드가 존재하는가? 
-    // 받을 타입을 앞쪽에 적어주면됨 
-    boolean existsByAddressAndGraduation(String address,boolean graduation);
+    // address가 '서울특별시' 이면서 graduation이 true인 레코드가 존재하는가?
+    // 받을 타입을 앞쪽에 적어주면됨
+    boolean existsByAddressAndGraduation(String address, boolean graduation);
+
+    // @query :
+    // - 쿼리 메서드 생성 방식만으로는 실제 SQL을 작성하는데 한계가 있음
+    // - 쿼리 메서드는 복잡한 쿼리, 조인, 서브쿼리, 그룹화를 사용할 수 없음
+    // - 작업 SQL 문으로 쿼리를 생성하도록 하는 어노테이션
+
+    // 예시 )
+    // SELECT * FROM student
+    // WHERE student_number = 5
+    // AND age > 20
+
+    // JPQL (Java Persistance Query Language) :
+    // - 표준 SQL과 매우 흡사하지만 Entity명과 Entity 속성으로 쿼리를 작성하는 방법
+    @Query(value=
+            "SELECT s FROM student s WHERE s.studentNumber=5 AND s.age > 20 ",
+            nativeQuery=false
+    )
+    List<StudentEntity> getStudent2(Integer StudentNumber, Integer age);
+
+    // Native SQL :
+    // - 현재 사용하고 있는 RDBMS의 SQL 문법을 그대로 따르는 방식
+
+    @Query(
+            // value="SELECT * FROM student WHERE student_number = ?1 AND age > ?2",
+            value = "SELECT " +
+                    "student_number As stundentNumber, " +
+                    "name, " +
+                    "age, " +
+                    "address, " +
+                    "graduation " +
+                    "FROM student" +
+                    "WHERE student_number=?1" +
+                    "AND age > 72 ", 
+                    nativeQuery = true)
+    // 반환 타입 <반환받을 것> getString(받아올 것들) getString은 내 마음대로 지정해도 됨
+    List<StudentEntity> getStudent(Integer StudentNumber, Integer age);
 }
