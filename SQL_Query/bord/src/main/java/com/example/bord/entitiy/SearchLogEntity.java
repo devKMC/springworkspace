@@ -1,6 +1,4 @@
 package com.example.bord.entitiy;
-
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,14 +11,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-@Entity(name="comment")
-@Table(name="comment")
-public class CommentEntity {
+@Entity(name="search_log")
+@Table(name="search_log")
+public class SearchLogEntity {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Integer commentNumber;
-    private Integer boardNumber;
-    private String userEmail;
-    private String contents;
-    private String writeDatetime;
+    private Integer logSequence;
+    private String searchWord;
+    private String relationWord;
+    private Boolean relation;
 }
