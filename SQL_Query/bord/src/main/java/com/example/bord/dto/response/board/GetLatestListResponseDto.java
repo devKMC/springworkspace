@@ -23,11 +23,17 @@ public class GetLatestListResponseDto extends ResponseDto {
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
         this.latestList = latestList;
     }
-}
+
 
 // 생성해주는 메서드 작업
 
-public static ResponseEntity<GetLatestListResponseDto> success() {
-    GetLatestListResponseDto response = new GetLatestListResponseDto(); // 인스턴스 작업
+public static ResponseEntity<GetLatestListResponseDto> success(List<BoardListItem> latestList) {
+    GetLatestListResponseDto response = new GetLatestListResponseDto(latestList); // 인스턴스 작업
     return ResponseEntity.status(HttpStatus.OK).body(body);
+}
+
+    public static ResponseEntity<ResponseDto> databaseError(){
+        ResponseDto body = new ResponseDto(ResponseCode.DATABASE_ERROR, ResponseMessage.DATABASE_ERROR);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
+    }
 }
