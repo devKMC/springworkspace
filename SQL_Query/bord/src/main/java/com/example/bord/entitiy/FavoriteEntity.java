@@ -1,8 +1,6 @@
 package com.example.bord.entitiy;
 
-import com.example.bord.repository.pk.FavoritePK;
-
-
+import com.example.bord.entitiy.pk.FavoritePK;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

@@ -1,4 +1,4 @@
-package com.example.bord.repository.pk;
+package com.example.bord.entitiy.pk;
 
 import java.io.Serializable;
 
