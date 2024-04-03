@@ -1,4 +1,4 @@
-package main.java.com.example.board.dto.response.board.user;
+package com.example.board.dto.response.board.user;
 
 
 import org.springframework.http.HttpStatus;

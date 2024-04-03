@@ -1,9 +1,7 @@
 package com.example.board.service;
-
+import com.example.board.dto.response.board.user.GetUserResponseDto;
 
 import org.springframework.http.ResponseEntity;
-
-import com.example.board.dto.response.user.GetUserResponseDto;
 
 public interface UserService {
     
