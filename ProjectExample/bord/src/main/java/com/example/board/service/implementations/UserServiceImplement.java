@@ -34,6 +34,7 @@ public class UserServiceImplement implements UserService {
         // 2- 2 false 이면 존재하지 않은 유저 응답처리
         // 2- 3 null  이면 존재하지 않은 유저 응답처리
 
+        if (userEntity == null) return ResponseDto.notExistUser();
         // 3. 조회 결과 데이터를 성공 응답
         // 3. 1 에러
 
