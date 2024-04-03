@@ -17,7 +17,10 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/{email}")
-    public ResponseEntity<? super GetLatestListResponseDto> getLatestList() {
-        return null;
+    public ResponseEntity<? super GetUserResponseDto> getUser(
+            @PathVariable("email") String email) {
+        ResponseEntity<? super GetUserResponseDto> response = userService.getUser(email);
+        return response;
     }
+
 }
