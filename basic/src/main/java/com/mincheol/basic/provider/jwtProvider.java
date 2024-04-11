@@ -1,6 +1,9 @@
 package com.mincheol.basic.provider;
 import java.time.Instant;
 import java.util.Date;
+
+import org.springframework.stereotype.Component;
+
 import java.time.temporal.ChronoUnit;
 import java.nio.charset.StandardCharsets;
 
@@ -9,10 +12,7 @@ import io.jsonwebtoken.security.Keys;
 import java.security.Key;
 
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 
 // JWT : 
@@ -24,8 +24,8 @@ import io.jsonwebtoken.Jwts;
 // - 페이로드 : 클라이언트 혹은 서버가 상대방에게 전달할 데이터가 포함되어 있음 (작성자, 접근주체의 정보, 작성시간, 만료 시간 등)
 // - 서명 : 헤더와 페이로드로 합쳐서 인코딩하고 지정한 비밀키로 암호화한 데이터
 
-
-public class jwtProvider {
+@Component
+public class JwtProvider {
 
     // JMT 생성
     public String create(String principle){
