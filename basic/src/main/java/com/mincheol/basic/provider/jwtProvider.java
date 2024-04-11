@@ -33,7 +33,7 @@ public class JwtProvider {
         Date expiredDate = Date.from(Instant.now().plus(4, ChronoUnit.HOURS));
         
         // 비밀키 생성
-        Key Key = Keys.hmacShaKeyFor("qweqwewqewqewqqweqweqwewqewqe".getBytes(StandardCharsets.UTF_8));
+        Key Key = Keys.hmacShaKeyFor("qweqwewqewqewqqweqweqwewqewqeqweqwewqewqewqqweqweqwewqewqe".getBytes(StandardCharsets.UTF_8));
 
         // JWT 생성
         String jwt = Jwts.builder().
