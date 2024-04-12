@@ -2,6 +2,7 @@ package com.mincheol.basic.provider;
 import java.time.Instant;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.time.temporal.ChronoUnit;
@@ -11,8 +12,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import java.security.Key;
 
-
-
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 
 // JWT : 
@@ -27,13 +27,17 @@ import io.jsonwebtoken.Jwts;
 @Component
 public class JwtProvider {
 
+    @Value("${jwt.secret-key}")
+    private String secretKey;
+
+
     // JMT 생성
     public String create(String principle){
         // 만료시간  생성
         Date expiredDate = Date.from(Instant.now().plus(4, ChronoUnit.HOURS));
         
         // 비밀키 생성
-        Key Key = Keys.hmacShaKeyFor("qweqwewqewqewqqweqweqwewqewqeqweqwewqewqewqqweqweqwewqewqe".getBytes(StandardCharsets.UTF_8));
+        Key Key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
 
         // JWT 생성
         String jwt = Jwts.builder().
@@ -57,5 +61,28 @@ public class JwtProvider {
         return jwt;
     }
 
+
+    public String validation(String jwt){
+        
+        // 검증 결과로 나타나는 페이로드가 저장될 변수
+        Claims claims = null;
+
+        // 비밀키 생성
+        Key Key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+
+        try {
+            // 비밀키로 jwt 복호화 작업
+            claims = Jwts.parserBuilder()
+            .setSigningKey(Key)
+            .build()
+            .parseClaimsJws(jwt)
+            .getBody();
+        }catch(Exception exception){
+            exception.printStackTrace();
+            return null;
+        }
+        return claims.getSubject();
+
+    }
 
 }
