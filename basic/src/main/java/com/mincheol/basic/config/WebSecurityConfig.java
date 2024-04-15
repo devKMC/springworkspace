@@ -3,6 +3,7 @@ package com.mincheol.basic.config;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
@@ -10,6 +11,9 @@ import org.springframework.security.config.annotation.web.configurers.HttpBasicC
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.mincheol.basic.filter.JwtAuthenticationFilter;
 
@@ -66,7 +70,22 @@ public class WebSecurityConfig {
         // XSS (cross-Site Scripting) :
         // - 공격자가 웹 브라우저에 악성 스크립트를 작성하여 실행시키는 공격
         .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .csrf(CsrfConfigurer::disable);
+        .csrf(CsrfConfigurer::disable)
+        // Spring security 사용 이후에는 CORS 정책을 Security Filter Chain에 등록
+        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+
+        // 요청 URL의 패턴에 따라 리솟 ㅡ접근 허용 범위를 지정
+        // 인증 되지 않은 사용자도 접근을 허용
+        // 인증된 사용자 중 특정 권한을 가지고 있는 사용자만 접근을 허용
+        // 인증된 사용자는 모두 접근을 허용
+        .authorizeHttpRequests(request -> request
+        // 특정 URL 패턴에 대한 요청은 인증되지 않은 사용자도 접근을 허용
+        .requestMatchers(HttpMethod.GET,"/auth/*").permitAll()
+        // 특정 URL 패턴에 대한 요청은 지정한 권한을 가지고 있는 사용자만 접근을 허용
+        .requestMatchers("/student/**").hasRole("STUDENT")
+        // 인증된 사용자는 모두 접근을 허용
+        .anyRequest().authenticated()
+        );
 
         // CSRF (cross-Site Request forgery)
         // - 클라이언트 (사용자)가 자신의 의도와는 무관한 공격행위를 하는 것
@@ -74,6 +93,19 @@ public class WebSecurityConfig {
         // 우리가 생성한 jwtAuthenticationFilter 를 UsernamePasswordAuthenticationFilter 이전에 등록
         security.addFilterBefore(jwtAuthenticationFilter,UsernamePasswordAuthenticationFilter.class);
         return security.build();
+    }
+
+    protected CorsConfigurationSource corsConfigurationSource() {
+
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedMethod("*");
+        configuration.addAllowedOrigin("*");
+        configuration.addAllowedHeader("*");
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+
+        return source;
     }
 
 }
