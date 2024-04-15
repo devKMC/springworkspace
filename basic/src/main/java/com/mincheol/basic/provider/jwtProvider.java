@@ -1,4 +1,5 @@
 package com.mincheol.basic.provider;
+
 import java.time.Instant;
 import java.util.Date;
 
@@ -27,11 +28,10 @@ import io.jsonwebtoken.Jwts;
 @Component
 public class JwtProvider {
 
-
     // JWT 암호화에 사용되는 비밀키는 보안 관리가 되어야 함
     // 코드에 직접적으로 비밀키를 작성하는 것은 보안상 좋지 않음
-    // 해결책
 
+    // 해결책
     // 1. application.properties / application.yaml 에 등록
     // - application.properties 혹은 application.yaml에 비밀키를 작성
     // - @value를 이용하여 데이터를 가져옴
@@ -47,16 +47,14 @@ public class JwtProvider {
     // - OS 부팅시에 valt 서버에 접근하여 비밀키를 가져와서 사용하는 방법
     // - 매 부팅시 다른 비밀키를 제공해줌
 
-
     @Value("${jwt.secret-key}")
     private String secretKey;
 
-
     // JMT 생성
-    public String create(String principle){
-        // 만료시간  생성
+    public String create(String principle) {
+        // 만료시간 생성
         Date expiredDate = Date.from(Instant.now().plus(4, ChronoUnit.HOURS));
-        
+
         // 비밀키 생성
         Key Key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
 
@@ -64,27 +62,26 @@ public class JwtProvider {
         String jwt = Jwts.builder().
 
         // 서명 (서명에 사용할 비밀키, 서명에 사용할 암호화 알고리즘)
-        signWith(Key,SignatureAlgorithm.HS256)
+                signWith(Key, SignatureAlgorithm.HS256)
 
-        // 페이로드
-        // "작성자"
-        .setSubject(principle)
-        
-        // 생성 시간
-        .setIssuedAt(new Date()).
-        
-        // 만료 시간
-        setExpiration(expiredDate)
-        
-        // 위의 내용을 압축
-        .compact();
+                // 페이로드
+                // "작성자"
+                .setSubject(principle)
+
+                // 생성 시간
+                .setIssuedAt(new Date()).
+
+                // 만료 시간
+                setExpiration(expiredDate)
+
+                // 위의 내용을 압축
+                .compact();
 
         return jwt;
     }
 
+    public String validation(String jwt) {
 
-    public String validation(String jwt){
-        
         // 검증 결과로 나타나는 페이로드가 저장될 변수
         Claims claims = null;
 
@@ -94,11 +91,11 @@ public class JwtProvider {
         try {
             // 비밀키로 jwt 복호화 작업
             claims = Jwts.parserBuilder()
-            .setSigningKey(Key)
-            .build()
-            .parseClaimsJws(jwt)
-            .getBody();
-        }catch(Exception exception){
+                    .setSigningKey(Key)
+                    .build()
+                    .parseClaimsJws(jwt)
+                    .getBody();
+        } catch (Exception exception) {
             exception.printStackTrace();
             return null;
         }

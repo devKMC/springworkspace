@@ -2,9 +2,14 @@ package com.mincheol.basic.filter;
 
 import java.io.IOException;
 
+import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.apache.tomcat.util.http.parser.Authorization;
 import com.mincheol.basic.provider.JwtProvider;
 
 import jakarta.servlet.FilterChain;
@@ -33,6 +38,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             // 1. request 객체에서 token 가져오기
             String token = parseBearerToken(request);
             if (token == null) {
+                filterChain.doFilter(request, response);
                 return;
             }
             // 2. token 검증
@@ -40,12 +46,31 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (subject == null) {
                 return;
             }
-            
+
+            // 3. principle의 대한 정보를  controller로 전달하기 위해 context에 담기
+
+            // 3-1 인증된 사용자라는 의미의 UsernamePasswordAuthenticationToken 객체를 생성
+            // 사용자의 이름, 비밀번호 , 사용자 권한
+            AbstractAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(token, null,AuthorityUtils.NO_AUTHORITIES);
+
+            // 3-2 인증 요청에 대한 세부 정보를 등록 / 웹 인증 정보를 해당 리퀘스트에 등록
+            authenticationToken.setDetails(new WebAuthenticationDetails(request));
+
+            // 3-3 빈 security context 생성
+            SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+
+            // 3-4 생성한 빈 security context에 생성한 인증 토큰을 설정
+            securityContext.setAuthentication(authenticationToken);
+
+            // 3-5 생성한 security context를 사용할 수 있도록 등록
+            SecurityContextHolder.setContext(securityContext);
 
         } catch (Exception exception) {
             exception.printStackTrace();
         }
 
+        // 4. 다음 필터에 request 객체와 response 객체를 전달
+        filterChain.doFilter(request, response);
     }
 
     // 1. request 객체에서 header를 가져옴
