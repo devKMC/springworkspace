@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mincheol.basic.dto.request.student.PatchStudentRequestDto;
+import com.mincheol.basic.dto.request.student.SignInRequestDto;
 import com.mincheol.basic.dto.request.student.postStudentRequestDto;
 import com.mincheol.basic.service.implement.StudentServiceImplement;
 
@@ -51,4 +52,13 @@ public class studentController {
         return response;
     }
 
+    @PostMapping("/sign-in")
+    public ResponseEntity<String> signIn (
+        @RequestBody @Valid SignInRequestDto requestBody
+    ) {
+        return studentService.signIn(requestBody);
+    }
+    
 }
+
+

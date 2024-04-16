@@ -108,4 +108,6 @@ public interface studentRepository
         List<StudentEntity> getStudent3(
                         @Param("student_number") Integer StudentNumber,
                         @Param("age") Integer age);
+
+                        StudentEntity findByStudentNumber(Integer studentNumber);
 }

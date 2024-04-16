@@ -87,14 +87,14 @@ public class WebSecurityConfig {
         // 인증된 사용자는 모두 접근을 허용
         .authorizeHttpRequests(request -> request
         // 특정 URL 패턴에 대한 요청은 인증되지 않은 사용자도 접근을 허용
-        .requestMatchers(HttpMethod.GET,"/auth/*").permitAll()
+        .requestMatchers(HttpMethod.GET,"/auth/*/").permitAll()
         // 특정 URL 패턴에 대한 요청은 지정한 권한을 가지고 있는 사용자만 접근을 허용
-        .requestMatchers("/student/**").hasRole("STUDENT")
+        // .requestMatchers("/student/**").hasRole("STUDENT")
+        .requestMatchers("/student", "/student/**").permitAll()
         // 인증된 사용자는 모두 접근을 허용
         .anyRequest().authenticated()
         )
         .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(new failedAuthorizationEntryPoint()));
-        
 
         // CSRF (cross-Site Request forgery)
         // - 클라이언트 (사용자)가 자신의 의도와는 무관한 공격행위를 하는 것
@@ -134,3 +134,43 @@ class failedAuthorizationEntryPoint implements AuthenticationEntryPoint {
     }
     
 }
+
+
+
+// * ==========================================================================================
+
+// 코드 해석 
+
+// public class WebSecurityConfig {
+
+//     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    // Spring Security 필터 체인을 정의하는 메서드
+//     @Bean
+//     protected SecurityFilterChain configure(HttpSecurity security) throws Exception {
+//         security
+            // 기본 HTTP 기본 인증을 사용하지 않도록 설정
+//             .httpBasic(HttpBasicConfigurer::disable)
+            // 세션 관리 정책 설정
+//             .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            // CSRF 보호 설정 비활성화
+//             .csrf(CsrfConfigurer::disable)
+            // CORS 설정 적용
+//             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            // 요청에 대한 인가 정책 설정
+//             .authorizeHttpRequests(request -> request
+                // 특정 URL 패턴에 대한 GET 요청은 인증 없이 허용
+//                 .requestMatchers(HttpMethod.GET, "/auth/*").permitAll()
+                // "/student/**" 패턴의 요청은 "STUDENT" 권한을 가진 사용자만 허용
+//                 .requestMatchers("/student/**").hasRole("STUDENT")
+                // 그 외의 요청은 인증된 사용자만 허용
+//                 .anyRequest().authenticated()
+//             )
+            // 인증 실패 처리를 위한 커스텀 예외 처리기 설정
+//             .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(new FailedAuthorizationEntryPoint()));
+
+        // JWT 인증 필터를 UsernamePasswordAuthenticationFilter 앞에 추가
+//         security.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        
+        // 설정된 보안 설정 반환
+//         return security.build();

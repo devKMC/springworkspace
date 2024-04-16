@@ -70,12 +70,14 @@ public class StudentEntity {
     private Integer age;
     private String address;
     private Boolean graduation;
+    private String password;
 
     public StudentEntity(postStudentRequestDto dto){
         this.name = dto.getName();
         this.age = dto.getAge();
         this.address = dto.getAddress();
         this.graduation = dto.getGraduation();
+        this.password = dto.getPassword();
 
     }
 }
