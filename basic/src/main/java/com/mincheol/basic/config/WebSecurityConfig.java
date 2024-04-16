@@ -55,7 +55,7 @@ public class WebSecurityConfig {
         // session 과 cookie의 차이 :
         // - 저장위치 다름 cookie는 클라이언트 , session은 서버
         // - 보안 : Sessoin이 보안 수준이 높음
-        // - 수명 : cokie 지정한 기간동안 지속적으로 유지, session은 연결이 끊기면 파기됨
+        // - 수명 : cookie 지정한 기간동안 지속적으로 유지, session은 연결이 끊기면 파기됨
         // - 용도 : cookie에는 간단한 데이터 (id,token)를 저장 , session에는 민감한 데이터 (개인정보)를 저장      
 
         // cashe:
@@ -74,7 +74,7 @@ public class WebSecurityConfig {
         // Spring security 사용 이후에는 CORS 정책을 Security Filter Chain에 등록
         .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 
-        // 요청 URL의 패턴에 따라 리솟 ㅡ접근 허용 범위를 지정
+        // 요청 URL의 패턴에 따라 리소스접근 허용 범위를 지정
         // 인증 되지 않은 사용자도 접근을 허용
         // 인증된 사용자 중 특정 권한을 가지고 있는 사용자만 접근을 허용
         // 인증된 사용자는 모두 접근을 허용
