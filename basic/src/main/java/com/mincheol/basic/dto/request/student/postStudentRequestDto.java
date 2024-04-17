@@ -13,7 +13,7 @@ import lombok.Setter;
 
 
 // USER를 만들기 위해 작업
-public class postStudentRequestDto {
+public class PostStudentRequestDto {
     @NotBlank
     private String name;
 

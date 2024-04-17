@@ -1,7 +1,7 @@
 package com.mincheol.basic.entity;
 
 
-import com.mincheol.basic.dto.request.student.postStudentRequestDto;
+import com.mincheol.basic.dto.request.student.PostStudentRequestDto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -72,7 +72,7 @@ public class StudentEntity {
     private Boolean graduation;
     private String password;
 
-    public StudentEntity(postStudentRequestDto dto){
+    public StudentEntity(PostStudentRequestDto dto){
         this.name = dto.getName();
         this.age = dto.getAge();
         this.address = dto.getAddress();

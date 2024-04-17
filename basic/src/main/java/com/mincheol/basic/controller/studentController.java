@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mincheol.basic.dto.request.student.PatchStudentRequestDto;
 import com.mincheol.basic.dto.request.student.SignInRequestDto;
-import com.mincheol.basic.dto.request.student.postStudentRequestDto;
+import com.mincheol.basic.dto.request.student.PostStudentRequestDto;
 import com.mincheol.basic.service.implement.StudentServiceImplement;
 
 import jakarta.validation.Valid;
@@ -30,7 +30,7 @@ public class studentController {
 
     @PostMapping("/")
     public ResponseEntity<String> postStudent(
-            @RequestBody @Valid postStudentRequestDto requestBody) {
+            @RequestBody @Valid PostStudentRequestDto requestBody) {
         ResponseEntity<String> response = studentService.postStudent(requestBody);
         return response;
     }
