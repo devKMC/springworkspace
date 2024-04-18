@@ -22,8 +22,6 @@ public class BasicServiceImplement implements BasicService {
 
     private final JwtProvider jwtProvider;
 
-
-
     @Override
     public String getHello() {
         return "hello Springboot!!";
